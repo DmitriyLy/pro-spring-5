@@ -12,8 +12,11 @@ repositories {
 dependencies {
     implementation 'org.springframework:spring-core:5.3.14'
     implementation 'org.springframework:spring-context:5.3.14'
+    implementation 'junit:junit:4.13.2'
+    implementation 'org.springframework:spring-test:5.3.14'
 }
 
+/*
 test {
     useJUnitPlatform()
-}
+}*/
