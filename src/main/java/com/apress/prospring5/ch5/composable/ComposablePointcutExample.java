@@ -1,6 +1,7 @@
 package com.apress.prospring5.ch5.composable;
 
 import com.apress.prospring5.ch2.common.Guitar;
+import com.apress.prospring5.ch5.GrammyGuitarist;
 import com.apress.prospring5.ch5.cfp.SimpleBeforeAdvice;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.ClassFilter;

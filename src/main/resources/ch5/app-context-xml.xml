@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="johnMayer" class="com.apress.prospring5.ch5.GrammyGuitarist"/>
+    <bean id="advice" class="com.apress.prospring5.ch5.proxy_factory_bean.AuditAdvice"/>
+
+    <util:list id="interceptorAdviceNames">
+        <value>advice</value>
+    </util:list>
+
+
+    <bean id="proxyOne" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="johnMayer"/>
+        <property name="proxyInterfaces" value="com.apress.prospring5.ch5.GrammyGuitaristInterface" />
+        <property name="interceptorNames" ref="interceptorAdviceNames" />
+    </bean>
+
+
+    <util:list id="interceptorAdvisorNames">
+        <value>advisor</value>
+    </util:list>
+
+    <bean id="proxyTwo" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="johnMayer"/>
+        <property name="proxyInterfaces" value="com.apress.prospring5.ch5.GrammyGuitaristInterface" />
+        <property name="interceptorNames" ref="interceptorAdvisorNames" />
+    </bean>
+
+    <bean id="documentaristOne" class="com.apress.prospring5.ch5.proxy_factory_bean.Documentarist"
+          p:guitarist-ref="proxyOne"/>
+
+    <bean id="documentaristTwo" class="com.apress.prospring5.ch5.proxy_factory_bean.Documentarist"
+          p:guitarist-ref="proxyTwo"/>
+
+    <bean id="advisor" class="org.springframework.aop.support.DefaultPointcutAdvisor" p:advice-ref="advice">
+        <property name="pointcut">
+            <bean class="org.springframework.aop.aspectj.AspectJExpressionPointcut"
+                p:expression="execution(* sing*(..))"
+            />
+        </property>
+    </bean>
+
+</beans>
