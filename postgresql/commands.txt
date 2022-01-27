@@ -1,3 +1,7 @@
 docker build --no-cache --tag pro-spring-5-postgres-image .
 docker run -d --name pro-spring-postgres pro-spring-5-postgres-image
+docker start pro-spring-postgres
 docker exec -it pro-spring-postgres bash
+
+
+psql --username=pro_spring --password
