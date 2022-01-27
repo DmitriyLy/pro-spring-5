@@ -1,5 +1,5 @@
 docker build --no-cache --tag pro-spring-5-postgres-image .
-docker run -d --name pro-spring-postgres pro-spring-5-postgres-image
+docker run -d --name pro-spring-postgres --publish 5432:5432 pro-spring-5-postgres-image
 docker start pro-spring-postgres
 docker exec -it pro-spring-postgres bash
 
