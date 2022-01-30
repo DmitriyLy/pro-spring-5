@@ -24,6 +24,7 @@ dependencies {
     implementation 'org.springframework:spring-jdbc:5.3.14'
     implementation 'org.postgresql:postgresql:42.3.1'
     implementation 'org.apache.commons:commons-dbcp2:2.9.0'
+    implementation group: 'com.h2database', name: 'h2', version: '2.1.210'
 }
 
 /*
