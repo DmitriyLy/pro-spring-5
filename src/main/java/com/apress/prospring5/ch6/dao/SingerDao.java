@@ -14,4 +14,7 @@ public interface SingerDao {
     void delete(Long id);
     List<Singer> findAllWithDetails();
     void insertWithDetails(Singer singer);
+    default String findNameById(Long id) {
+        return "";
+    }
 }
