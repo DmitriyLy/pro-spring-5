@@ -5,9 +5,9 @@ import com.apress.prospring5.ch6.entities.Singer;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
 
 public class JdbcSingerDao implements SingerDao, InitializingBean {
@@ -40,12 +40,12 @@ public class JdbcSingerDao implements SingerDao, InitializingBean {
 
     @Override
     public List<Singer> findAll() {
-        throw new NotImplementedException();
+        return Collections.emptyList();
     }
 
     @Override
     public List<Singer> findByFirstName(String firstName) {
-        throw new NotImplementedException();
+        return Collections.emptyList();
     }
 
     @Override
