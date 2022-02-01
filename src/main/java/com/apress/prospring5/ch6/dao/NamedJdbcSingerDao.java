@@ -4,10 +4,13 @@ import com.apress.prospring5.ch6.entities.Singer;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +37,15 @@ public class NamedJdbcSingerDao implements SingerDao, InitializingBean {
 
     @Override
     public List<Singer> findAll() {
-        throw new NotImplementedException();
+        String query = "SELECT id, first_name, last_name, birth_date from singer";
+        return namedParameterJdbcTemplate.query(query, (rs, rowNum) -> {
+            Singer singer = new Singer();
+            singer.setId(rs.getLong("id"));
+            singer.setFirstName(rs.getString("first_name"));
+            singer.setLastName(rs.getString("last_name"));
+            singer.setBirthDate(rs.getDate("birth_date"));
+            return singer;
+        });
     }
 
     @Override
@@ -81,6 +92,19 @@ public class NamedJdbcSingerDao implements SingerDao, InitializingBean {
     public void afterPropertiesSet() throws Exception {
         if (namedParameterJdbcTemplate == null) {
             throw new BeanCreationException("namedParameterJdbcTemplate source must be set");
+        }
+    }
+
+    private static final class SingerMapper implements RowMapper<Singer> {
+
+        @Override
+        public Singer mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Singer singer = new Singer();
+            singer.setId(rs.getLong("id"));
+            singer.setFirstName(rs.getString("first_name"));
+            singer.setLastName(rs.getString("last_name"));
+            singer.setBirthDate(rs.getDate("birth_date"));
+            return singer;
         }
     }
 }
