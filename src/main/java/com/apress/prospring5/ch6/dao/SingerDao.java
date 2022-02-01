@@ -2,6 +2,7 @@ package com.apress.prospring5.ch6.dao;
 
 import com.apress.prospring5.ch6.entities.Singer;
 
+import java.util.Collections;
 import java.util.List;
 
 public interface SingerDao {
@@ -16,5 +17,8 @@ public interface SingerDao {
     void insertWithDetails(Singer singer);
     default String findNameById(Long id) {
         return "";
+    }
+    default List<Singer> findAllWithAlbums() {
+        return Collections.emptyList();
     }
 }
