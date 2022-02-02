@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -37,6 +39,30 @@ public class AnnotationJdbcTest {
         List<Singer> singers = singerDao.findByFirstName("Eric");
         assertFalse(singers.isEmpty());
         listSingers(singers);
+    }
+
+    @Test
+    public void testSingerUpdate() {
+        Singer singer = new Singer();
+        singer.setId(1L);
+        singer.setFirstName("John Clayton");
+        singer.setLastName("Mayer");
+        singer.setBirthDate(Date.valueOf(LocalDate.of(1977, 9, 16)));
+        singerDao.update(singer);
+
+        List<Singer> singers = singerDao.findAll();
+        listSingers(singers);
+    }
+
+    @Test
+    public void testSingerInsert() {
+        Singer singer = new Singer();
+        singer.setFirstName("Ed");
+        singer.setLastName("Shmed");
+        singer.setBirthDate(Date.valueOf(LocalDate.of(1991, 1, 17)));
+        singerDao.insert(singer);
+
+        listSingers(singerDao.findAll());
     }
 
     private void listSingers(List<Singer> singers) {

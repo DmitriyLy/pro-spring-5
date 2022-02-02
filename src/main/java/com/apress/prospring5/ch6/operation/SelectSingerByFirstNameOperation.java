@@ -1,19 +1,24 @@
-package com.apress.prospring5.ch6;
+package com.apress.prospring5.ch6.operation;
 
 import com.apress.prospring5.ch6.entities.Singer;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.object.MappingSqlQuery;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
-@Component("selectAllSingers")
-public class SelectAllSingers extends MappingSqlQuery<Singer> {
-    private static final String SQL_SELECT_ALL_SINGERS = "select id, first_name, last_name, birth_date from singer";
+@Component("selectSingerByFirstNameOperation")
+public class SelectSingerByFirstNameOperation extends MappingSqlQuery<Singer> {
 
-    public SelectAllSingers(DataSource dataSource) {
-        super(dataSource, SQL_SELECT_ALL_SINGERS);
+    private static final String SQL_FIND_BY_FIRST_NAME = "select id, first_name, last_name, birth_date " +
+            "from singer where first_name = :first_name";
+
+    public SelectSingerByFirstNameOperation(DataSource dataSource) {
+        super(dataSource, SQL_FIND_BY_FIRST_NAME);
+        super.declareParameter(new SqlParameter("first_name", Types.VARCHAR));
     }
 
     @Override

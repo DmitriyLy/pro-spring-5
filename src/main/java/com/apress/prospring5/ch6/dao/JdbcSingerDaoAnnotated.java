@@ -1,15 +1,20 @@
 package com.apress.prospring5.ch6.dao;
 
-import com.apress.prospring5.ch6.SelectAllSingers;
-import com.apress.prospring5.ch6.SelectSingerByFirstName;
+import com.apress.prospring5.ch6.operation.InsertSingerOperation;
+import com.apress.prospring5.ch6.operation.SelectAllSingersOperation;
+import com.apress.prospring5.ch6.operation.SelectSingerByFirstNameOperation;
+import com.apress.prospring5.ch6.operation.UpdateSingerOperation;
 import com.apress.prospring5.ch6.entities.Singer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,25 +25,45 @@ public class JdbcSingerDaoAnnotated implements SingerDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcSingerDaoAnnotated.class);
 
     private DataSource dataSource;
-    private SelectAllSingers selectAllSingers;
-    private SelectSingerByFirstName selectSingerByFirstName;
+    private SelectAllSingersOperation selectAllSingersOperation;
+    private SelectSingerByFirstNameOperation selectSingerByFirstNameOperation;
+    private UpdateSingerOperation updateSingerOperation;
+    private InsertSingerOperation insertSingerOperation;
 
-    public SelectSingerByFirstName getSelectSingerByFirstName() {
-        return selectSingerByFirstName;
+    public InsertSingerOperation getInsertSingerOperation() {
+        return insertSingerOperation;
     }
 
     @Autowired
-    public void setSelectSingerByFirstName(SelectSingerByFirstName selectSingerByFirstName) {
-        this.selectSingerByFirstName = selectSingerByFirstName;
+    public void setInsertSingerOperation(InsertSingerOperation insertSingerOperation) {
+        this.insertSingerOperation = insertSingerOperation;
     }
 
-    public SelectAllSingers getSelectAllSingers() {
-        return selectAllSingers;
+    public UpdateSingerOperation getUpdateSingerOperation() {
+        return updateSingerOperation;
     }
 
-    @Resource(name = "selectAllSingers")
-    public void setSelectAllSingers(SelectAllSingers selectAllSingers) {
-        this.selectAllSingers = selectAllSingers;
+    @Autowired
+    public void setUpdateSingerOperation(UpdateSingerOperation updateSingerOperation) {
+        this.updateSingerOperation = updateSingerOperation;
+    }
+
+    public SelectSingerByFirstNameOperation getSelectSingerByFirstNameOperation() {
+        return selectSingerByFirstNameOperation;
+    }
+
+    @Autowired
+    public void setSelectSingerByFirstNameOperation(SelectSingerByFirstNameOperation selectSingerByFirstNameOperation) {
+        this.selectSingerByFirstNameOperation = selectSingerByFirstNameOperation;
+    }
+
+    public SelectAllSingersOperation getSelectAllSingersOperation() {
+        return selectAllSingersOperation;
+    }
+
+    @Resource(name = "selectAllSingersOperation")
+    public void setSelectAllSingersOperation(SelectAllSingersOperation selectAllSingersOperation) {
+        this.selectAllSingersOperation = selectAllSingersOperation;
     }
 
     public DataSource getDataSource() {
@@ -52,14 +77,14 @@ public class JdbcSingerDaoAnnotated implements SingerDao {
 
     @Override
     public List<Singer> findAll() {
-        return selectAllSingers.execute();
+        return selectAllSingersOperation.execute();
     }
 
     @Override
     public List<Singer> findByFirstName(String firstName) {
         Map<String, Object> params = new HashMap<>();
         params.put("first_name", firstName);
-        return selectSingerByFirstName.executeByNamedParam(params);
+        return selectSingerByFirstNameOperation.executeByNamedParam(params);
     }
 
     @Override
@@ -74,12 +99,30 @@ public class JdbcSingerDaoAnnotated implements SingerDao {
 
     @Override
     public void insert(Singer singer) {
+        Map<String, Object> params = Map.of(
+                "first_name", singer.getFirstName(),
+                "last_name", singer.getLastName(),
+                "birth_date", singer.getBirthDate()
+        );
 
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        insertSingerOperation.updateByNamedParam(params, keyHolder);
+
+        singer.setId(keyHolder.getKey().longValue());
+
+        LOGGER.info("New singer inserted with id: " + singer.getId());
     }
 
     @Override
     public void update(Singer singer) {
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("first_name", singer.getFirstName());
+        params.put("last_name", singer.getLastName());
+        params.put("birth_date", singer.getBirthDate());
+        params.put("id", singer.getId());
+        updateSingerOperation.updateByNamedParam(params);
+        LOGGER.info("Existing singer updated with id: " + singer.getId());
     }
 
     @Override
