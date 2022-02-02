@@ -21,4 +21,7 @@ public interface SingerDao {
     default List<Singer> findAllWithAlbums() {
         return Collections.emptyList();
     }
+    default void insertWithAlbum(Singer singer) {
+
+    }
 }

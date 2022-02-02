@@ -1,5 +1,6 @@
 package com.apress.prospring5.ch6.annotated;
 
+import com.apress.prospring5.ch6.config.EmbeddedJdbcConfig2;
 import com.apress.prospring5.ch6.config.JdbcSingerDaoAnnotatedConfig2;
 import com.apress.prospring5.ch6.dao.SingerDao;
 import com.apress.prospring5.ch6.entities.Album;
@@ -22,7 +23,7 @@ public class AnnotationJdbcTest {
 
     @Before
     public void setUp() {
-        context = new AnnotationConfigApplicationContext(JdbcSingerDaoAnnotatedConfig2.class);
+        context = new AnnotationConfigApplicationContext(EmbeddedJdbcConfig2.class);
         singerDao = context.getBean(SingerDao.class);
         assertNotNull(singerDao);
     }
@@ -63,6 +64,32 @@ public class AnnotationJdbcTest {
         singerDao.insert(singer);
 
         listSingers(singerDao.findAll());
+    }
+
+    @Test
+    public void testSingerInsertWithAlbum() {
+        Singer singer = new Singer();
+        singer.setFirstName("BB");
+        singer.setLastName("King");
+        singer.setBirthDate(Date.valueOf(LocalDate.of(1940, 8, 16)));
+
+        singer.addAlbum(() -> {
+            Album album = new Album();
+            album.setTitle("My Kind of Blues");
+            album.setReleaseDate(Date.valueOf(LocalDate.of(1961, 7, 18)));
+            return album;
+        });
+
+        singer.addAlbum(() -> {
+            Album album = new Album();
+            album.setTitle("A Heart Full of Blues");
+            album.setReleaseDate(Date.valueOf(LocalDate.of(1962, 3, 20)));
+            return album;
+        });
+
+        singerDao.insertWithAlbum(singer);
+
+        listSingers(singerDao.findAllWithAlbums());
     }
 
     private void listSingers(List<Singer> singers) {

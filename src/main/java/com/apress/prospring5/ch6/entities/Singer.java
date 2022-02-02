@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Singer implements Serializable {
     private Long id;
@@ -63,6 +65,10 @@ public class Singer implements Serializable {
 
         albums.add(album);
         return true;
+    }
+
+    public boolean addAlbum(Supplier<Album> albumSupplier) {
+        return addAlbum(albumSupplier.get());
     }
 
     @Override
