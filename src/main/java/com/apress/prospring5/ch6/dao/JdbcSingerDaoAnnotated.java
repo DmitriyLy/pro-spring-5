@@ -2,6 +2,7 @@ package com.apress.prospring5.ch6.dao;
 
 import com.apress.prospring5.ch6.entities.Album;
 import com.apress.prospring5.ch6.extractor.SingerWithDetailExtractor;
+import com.apress.prospring5.ch6.functions.GetFirstNameByIdStoredFunction;
 import com.apress.prospring5.ch6.operation.*;
 import com.apress.prospring5.ch6.entities.Singer;
 import org.slf4j.Logger;
@@ -35,6 +36,8 @@ public class JdbcSingerDaoAnnotated implements SingerDao {
     private InsertSingerOperation insertSingerOperation;
     private InsertSingerAlbumOperation insertSingerAlbumOperation;
     private  JdbcTemplate jdbcTemplate;
+    @Autowired
+    private GetFirstNameByIdStoredFunction getFirstNameByIdStoredFunction;
 
     @PostConstruct
     private void init() {
@@ -122,7 +125,9 @@ public class JdbcSingerDaoAnnotated implements SingerDao {
 
     @Override
     public String findFirstNameById(Long id) {
-        return null;
+        return getFirstNameByIdStoredFunction.execute(id).stream()
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

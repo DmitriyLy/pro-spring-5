@@ -23,7 +23,8 @@ public class AnnotationJdbcTest {
 
     @Before
     public void setUp() {
-        context = new AnnotationConfigApplicationContext(EmbeddedJdbcConfig2.class);
+        //context = new AnnotationConfigApplicationContext(EmbeddedJdbcConfig2.class);
+        context = new AnnotationConfigApplicationContext(JdbcSingerDaoAnnotatedConfig2.class);
         singerDao = context.getBean(SingerDao.class);
         assertNotNull(singerDao);
     }
@@ -90,6 +91,13 @@ public class AnnotationJdbcTest {
         singerDao.insertWithAlbum(singer);
 
         listSingers(singerDao.findAllWithAlbums());
+    }
+
+    @Test
+    public void testFindFirstNameById() {
+        String firstName = singerDao.findFirstNameById(2L);
+        assertEquals("Eric", firstName);
+        System.out.println("Retrieved value: " + firstName);
     }
 
     private void listSingers(List<Singer> singers) {

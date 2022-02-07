@@ -22,3 +22,14 @@ insert into singer (first_name, last_name, birth_date) values ('John', 'Butler',
 insert into album (singer_id, title, release_date) values (1, 'The Search For Everything', '2017-01-20');
 insert into album (singer_id, title, release_date) values (1, 'Battle Studies', '2009-11-17');
 insert into album (singer_id, title, release_date) values (2, 'From The Cradle ', '1994-09-13');
+
+
+CREATE FUNCTION get_first_name_by_id(in_id INT)
+RETURNS VARCHAR(60)
+language plpgsql
+AS
+$$
+BEGIN
+    RETURN (SELECT first_name FROM singer WHERE id = in_id);
+END;
+$$;
