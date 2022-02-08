@@ -5,3 +5,8 @@ docker exec -it pro-spring-postgres bash
 
 
 psql --username=pro_spring --password
+
+select * from singer;
+select * from album;
+select * from instrument;
+select * from singer_instrument;
