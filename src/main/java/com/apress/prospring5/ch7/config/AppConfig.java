@@ -29,7 +29,7 @@ public class AppConfig {
         try {
             EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
             return builder.setType(EmbeddedDatabaseType.H2)
-                    .addScripts("classpath:ch7/db/schema.sql", "classpath:ch7/db/schema.sql")
+                    .addScripts("classpath:ch7/db/schema.sql", "classpath:ch7/db/test-data.sql")
                     .build();
         } catch (Exception e) {
             logger.error("Embedded Datasource bean cannot be created!", e);
@@ -61,6 +61,7 @@ public class AppConfig {
         properties.put("hibernate.max_fetch_depth", 3);
         properties.put("hibernate.jdbc.batch_size", 10);
         properties.put("hibernate.jdbc.fetch_size", 50);
+        properties.put("hibernate.hbm2ddl.auto", "none");
         return properties;
     }
 }

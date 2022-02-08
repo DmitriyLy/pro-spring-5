@@ -3,6 +3,8 @@ package com.apress.prospring5.ch7.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "singer")
@@ -12,6 +14,8 @@ public class Singer implements Serializable {
     private String lastName;
     private Date birthDate;
     private int version;
+    private Set<Album> albums = new HashSet<>();
+    private Set<Instrument> instruments = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +64,36 @@ public class Singer implements Serializable {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    @OneToMany(mappedBy = "singer", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(Set<Album> albums) {
+        this.albums = albums;
+    }
+
+    public boolean addAlbum(Album album) {
+        album.setSinger(this);
+        return albums.add(album);
+    }
+
+    public void removeAlbum(Album album) {
+        albums.remove(album);
+    }
+
+    @ManyToMany
+    @JoinTable(name = "singer_instrument",
+            joinColumns = @JoinColumn(name = "singer_id"),
+            inverseJoinColumns = @JoinColumn(name = "instrument_id"))
+    public Set<Instrument> getInstruments() {
+        return instruments;
+    }
+
+    public void setInstruments(Set<Instrument> instruments) {
+        this.instruments = instruments;
     }
 
     @Override

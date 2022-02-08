@@ -10,6 +10,7 @@ public class Album {
     private String title;
     private Date releaseDate;
     private int version;
+    private Singer singer;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +50,16 @@ public class Album {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "singer_id")
+    public Singer getSinger() {
+        return singer;
+    }
+
+    public void setSinger(Singer singer) {
+        this.singer = singer;
     }
 
     @Override

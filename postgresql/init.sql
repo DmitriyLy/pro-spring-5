@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS instrument (
     instrument_id VARCHAR(60) PRIMARY KEY
 );
 
-CREATE TABLE singer_instrument (
+CREATE TABLE IF NOT EXISTS singer_instrument (
     singer_id INT NOT NULL,
     instrument_id VARCHAR(60) NOT NULL,
     PRIMARY KEY (singer_id, instrument_id),
