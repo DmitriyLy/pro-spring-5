@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS singer (
     first_name VARCHAR(60) NOT NULL,
     last_name VARCHAR(40) NOT NULL,
     BIRTH_DATE DATE,
+    version INT NOT NULL DEFAULT 0,
     UNIQUE (first_name, last_name)
 );
 
@@ -11,6 +12,7 @@ CREATE TABLE IF NOT EXISTS album (
     singer_id INT NOT NULL,
     title VARCHAR(100) NOT NULL,
     release_date DATE,
+    version INT NOT NULL DEFAULT 0,
     UNIQUE (singer_id, title),
     CONSTRAINT FK_ALBUM FOREIGN KEY (singer_id) REFERENCES singer(id)
 );
