@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS album (
     release_date DATE,
     version INT NOT NULL DEFAULT 0,
     UNIQUE (singer_id, title),
-    CONSTRAINT FK_ALBUM FOREIGN KEY (singer_id) REFERENCES singer(id)
+    CONSTRAINT FK_ALBUM FOREIGN KEY (singer_id) REFERENCES singer(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS instrument (
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS singer_instrument (
     instrument_id VARCHAR(60) NOT NULL,
     PRIMARY KEY (singer_id, instrument_id),
     CONSTRAINT fk_singer_instrument_1 FOREIGN KEY (singer_id) REFERENCES singer(id) ON DELETE CASCADE,
-    CONSTRAINT fk_singer_instrument_2 FOREIGN KEY (instrument_id) REFERENCES instrument(instrument_id)
+    CONSTRAINT fk_singer_instrument_2 FOREIGN KEY (instrument_id) REFERENCES instrument(instrument_id) ON DELETE CASCADE
 );
 
 insert into singer (first_name, last_name, birth_date) values ('John', 'Mayer', '1977-10-16');

@@ -1,5 +1,8 @@
 package com.apress.prospring5.ch7.entities;
 
+import org.hibernate.annotations.GenerationTime;
+
+import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -8,6 +11,14 @@ import java.util.Set;
 
 @Entity
 @Table(name = "singer")
+@NamedQueries({
+        @NamedQuery(name = "Singer.findById", query = "select distinct s from Singer s " +
+                "left join fetch s.albums a " +
+                "left join fetch s.instruments i where s.id = :id"),
+        @NamedQuery(name = "Singer.findAllWithAlbum", query = "select distinct s from Singer s " +
+                "left join fetch s.albums a " +
+                "left join fetch s.instruments i")
+})
 public class Singer implements Serializable {
     private Long id;
     private String firstName;

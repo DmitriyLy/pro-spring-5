@@ -1,5 +1,6 @@
 package com.apress.prospring5.ch7.config;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class AppConfig {
 
     private static Logger logger = LoggerFactory.getLogger(AppConfig.class);
 
-    @Bean
+    /*@Bean
     public DataSource dataSource() {
         try {
             EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
@@ -35,6 +36,16 @@ public class AppConfig {
             logger.error("Embedded Datasource bean cannot be created!", e);
             return null;
         }
+    }*/
+
+    @Bean
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl("jdbc:postgresql://localhost/pro_spring?ssl=false");
+        dataSource.setUsername("pro_spring");
+        dataSource.setPassword("pro_spring");
+        return dataSource;
     }
 
     @Bean
@@ -54,7 +65,8 @@ public class AppConfig {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        //properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.ProgressDialect");
         properties.put("hibernate.format_sql", true);
         properties.put("hibernate.use_sql_comments", true);
         properties.put("hibernate.show_sql", true);

@@ -33,22 +33,34 @@ public class SingerDaoImpl implements SingerDao {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Singer> findAllWithAlbums() {
-        return null;
+        return sessionFactory
+                .getCurrentSession()
+                .getNamedQuery("Singer.findAllWithAlbum")
+                .list();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Singer findById(Long id) {
-        return null;
+        return (Singer) sessionFactory
+                .getCurrentSession()
+                .getNamedQuery("Singer.findById")
+                .setParameter("id", id)
+                .uniqueResult();
     }
 
     @Override
     public Singer save(Singer singer) {
-        return null;
+        sessionFactory.getCurrentSession().saveOrUpdate(singer);
+        LOGGER.info("Singer saved with id: " + singer.getId());
+        return singer;
     }
 
     @Override
     public void delete(Singer singer) {
-
+        sessionFactory.getCurrentSession().delete(singer);
+        LOGGER.info("Deleted singer with id: " + singer.getId());
     }
 }
