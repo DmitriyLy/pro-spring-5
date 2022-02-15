@@ -95,6 +95,11 @@ public class Singer implements Serializable {
         albums.remove(album);
     }
 
+    public void addInstrument(Instrument instrument) {
+        instrument.addSinger(this);
+        instruments.add(instrument);
+    }
+
     @ManyToMany
     @JoinTable(name = "singer_instrument",
             joinColumns = @JoinColumn(name = "singer_id"),

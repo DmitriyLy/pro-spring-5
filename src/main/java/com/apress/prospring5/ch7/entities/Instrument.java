@@ -1,6 +1,7 @@
 package com.apress.prospring5.ch7.entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,6 +30,13 @@ public class Instrument {
 
     public void setSingers(Set<Singer> singers) {
         this.singers = singers;
+    }
+
+    public void addSinger(Singer singer) {
+        if (singers == null) {
+            singers = new HashSet<>();
+        }
+        singers.add(singer);
     }
 
     @Override

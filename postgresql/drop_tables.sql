@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS singer_instrument;
+DROP TABLE IF EXISTS instrument;
+DROP TABLE IF EXISTS album;
+DROP TABLE IF EXISTS singer;
