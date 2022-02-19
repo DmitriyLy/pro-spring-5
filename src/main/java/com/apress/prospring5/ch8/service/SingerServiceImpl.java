@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Service("jpaSingerService")
@@ -32,13 +33,15 @@ public class SingerServiceImpl implements SingerService {
     @Transactional(readOnly = true)
     @Override
     public List<Singer> findAllWithAlbum() {
-        throw new NotImplementedException("findAllWithAlbum");
+        return entityManager.createNamedQuery(Singer.FIND_ALL_WITH_ALBUM, Singer.class).getResultList();
     }
 
     @Transactional(readOnly = true)
     @Override
     public Singer findById(Long id) {
-        throw new NotImplementedException("findById");
+        TypedQuery<Singer> query = entityManager.createNamedQuery(Singer.FIND_SINGER_BY_ID, Singer.class);
+        query.setParameter("id", id);
+        return query.getSingleResult();
     }
 
     @Override
