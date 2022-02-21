@@ -5,6 +5,8 @@ import com.apress.prospring5.ch8.entities.Album;
 import com.apress.prospring5.ch8.entities.Instrument;
 import com.apress.prospring5.ch8.entities.Singer;
 import com.apress.prospring5.ch8.service.SingerService;
+import com.apress.prospring5.utils.DateUtils;
+import com.apress.prospring5.utils.SingerUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +54,23 @@ public class SingerJPATest {
         assertEquals("John", singer.getFirstName());
         assertEquals("Mayer", singer.getLastName());
         System.out.println(singer);
+    }
+
+    @Test
+    public void testInsert() {
+        Singer singer = new Singer();
+        singer.setFirstName("BB");
+        singer.setLastName("King");
+        singer.setBirthDate(DateUtils.toDate(1940, 8, 16));
+        SingerUtils.addAlbum(singer, new Album(), "My Kind of Blues", DateUtils.toSqlDate(1961, 7, 18));
+        SingerUtils.addAlbum(singer, new Album(), "A Heart Full of Blues", DateUtils.toSqlDate(1962, 3, 20));
+
+        singerService.save(singer);
+        assertNotNull(singer.getId());
+
+        List<Singer> singers = singerService.findAllWithAlbum();
+        assertEquals(4, singers.size());
+        listSingersWithAlbum(singers);
     }
 
     private static void listSingers(List<Singer> singers) {

@@ -1,5 +1,8 @@
 package com.apress.prospring5.ch8.entities;
 
+import com.apress.prospring5.common.IAlbum;
+import com.apress.prospring5.common.IAlbumContainer;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -24,7 +27,7 @@ import java.util.Set;
         name = "singerResult",
         entities = @EntityResult(entityClass = Singer.class)
 )
-public class Singer implements Serializable {
+public class Singer implements Serializable, IAlbumContainer<Album> {
 
     public static final String FIND_ALL = "Singer.findAll";
     public static final String FIND_SINGER_BY_ID = "Singer.findById";
@@ -32,7 +35,7 @@ public class Singer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "ID", insertable = false)
     private Long id;
 
     @Version
@@ -124,5 +127,11 @@ public class Singer implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +
                 '}';
+    }
+
+    @Override
+    public void addAlbum(Album album) {
+        albums.add(album);
+        album.setSinger(this);
     }
 }

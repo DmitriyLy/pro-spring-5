@@ -46,7 +46,15 @@ public class SingerServiceImpl implements SingerService {
 
     @Override
     public Singer save(Singer singer) {
-        throw new NotImplementedException("save");
+        if (singer.getId() == null) {
+            LOGGER.info("Inserting new singer");
+            entityManager.persist(singer);
+        } else {
+            entityManager.merge(singer);
+            LOGGER.info("Updating existing singer");
+        }
+        LOGGER.info("Singer saved with id: " + singer.getId());
+        return singer;
     }
 
     @Override

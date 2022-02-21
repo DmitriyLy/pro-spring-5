@@ -1,12 +1,14 @@
 package com.apress.prospring5.ch8.entities;
 
+import com.apress.prospring5.common.IAlbum;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "album")
-public class Album implements Serializable {
+public class Album implements Serializable, IAlbum {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -35,42 +37,52 @@ public class Album implements Serializable {
         this.releaseDate = releaseDate;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
 
+    @Override
     public int getVersion() {
         return version;
     }
 
+    @Override
     public void setVersion(int version) {
         this.version = version;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
 
+    @Override
     public void setTitle(String title) {
         this.title = title;
     }
 
+    @Override
     public Date getReleaseDate() {
         return releaseDate;
     }
 
+    @Override
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
     }
 
+    @Override
     public Singer getSinger() {
         return singer;
     }
 
+    @Override
     public void setSinger(Singer singer) {
         this.singer = singer;
     }
