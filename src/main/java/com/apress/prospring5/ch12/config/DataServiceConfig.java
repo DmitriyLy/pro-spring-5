@@ -31,7 +31,7 @@ public class DataServiceConfig {
             return databaseBuilder.setType(EmbeddedDatabaseType.H2).build();
         } catch (Exception e) {
             LOGGER.error("Cannot create datasource", e);
-            throw new RuntimeException(e);
+            return null;
         }
     }
 
