@@ -1,6 +1,7 @@
 package com.apress.prospring5.ch8.service;
 
 import com.apress.prospring5.ch8.entities.Singer;
+import com.apress.prospring5.ch8.metamodel.Singer_;
 import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 @Service("jpaSingerService")
@@ -66,5 +68,33 @@ public class SingerServiceImpl implements SingerService {
     @Override
     public List<Singer> findAllByNativeQuery() {
         throw new NotImplementedException("findAllByNativeQuery");
+    }
+
+    @Override
+    public List<Singer> findByCriteriaQuery(String firstName, String lastName) {
+        LOGGER.info("Searching singers for firstName: {} and lastName: {}", firstName, lastName);
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Singer> criteriaQuery = criteriaBuilder.createQuery(Singer.class);
+        Root<Singer> singerRoot = criteriaQuery.from(Singer.class);
+        singerRoot.fetch(Singer_.albums, JoinType.LEFT);
+        singerRoot.fetch(Singer_.instruments, JoinType.LEFT);
+
+        criteriaQuery.select(singerRoot).distinct(true);
+
+        Predicate criteria = criteriaBuilder.conjunction();
+
+        if (firstName != null) {
+            criteria = criteriaBuilder.and(criteria,
+                    criteriaBuilder.equal(singerRoot.get(Singer_.firstName), firstName));
+        }
+
+        if (lastName != null) {
+            criteria = criteriaBuilder.and(criteria,
+                    criteriaBuilder.equal(singerRoot.get(Singer_.lastName), lastName));
+        }
+
+        criteriaQuery.where(criteria);
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 }

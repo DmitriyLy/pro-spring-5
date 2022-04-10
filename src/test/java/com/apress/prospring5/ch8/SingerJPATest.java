@@ -73,6 +73,13 @@ public class SingerJPATest {
         listSingersWithAlbum(singers);
     }
 
+    @Test
+    public void testFindByCriteriaQuery() {
+        List<Singer> singers = singerService.findByCriteriaQuery("John", "Mayer");
+        assertEquals(1, singers.size());
+        listSingersWithAlbum(singers);
+    }
+
     private static void listSingers(List<Singer> singers) {
         LOGGER.info(" ---- Listing singers:");
         singers.stream()
