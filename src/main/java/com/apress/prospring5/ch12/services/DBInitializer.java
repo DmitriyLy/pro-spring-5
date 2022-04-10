@@ -23,7 +23,7 @@ public class DBInitializer {
         LOGGER.info("Starting db init....");
 
         saveSinger("John", "Mayer", DateUtils.toDate(1977, 9, 16));
-        saveSinger("Eric", "Clapton", DateUtils.toDate(1945, 2, 30));
+        saveSinger("Eric", "Clapton", DateUtils.toDate(1945, 1, 30));
         saveSinger("John", "Butler", DateUtils.toDate(1975, 3, 1));
 
         LOGGER.info("DB init completed.");
