@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/singer")
 public class SingerController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SingerController.class);
 
