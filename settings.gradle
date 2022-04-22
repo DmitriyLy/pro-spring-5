@@ -1,2 +1,3 @@
 rootProject.name = 'pro-spring-5'
+include 'ch16_war'
 
