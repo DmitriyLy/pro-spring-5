@@ -13,7 +13,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "Singer")
+@Table(name = "singer")
 public class Singer implements Serializable {
 
     @Id
